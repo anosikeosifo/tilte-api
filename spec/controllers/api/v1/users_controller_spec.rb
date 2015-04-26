@@ -1,15 +1,20 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::UsersController, type: :controller do
+RSpec.describe Api::V1::UsersController do
+
+  before(:each) do
+    #here i concatenate the json format into the request header, instead of passing it into each request
+    set_header_properties
+  end
   # describe "GET #index" do
   #   before(:each) do
   #     3.times { FactoryGirl.create(:user) }
-  #     get :index, format: :json
+  #     get :index
   #   end
 
 
   #   it "returns the profiles of all the users subscribed to the app" do
-  #     user_response = JSON.parse(response.body, symbolize_names: true)
+  #     user_response = json_response
   #     expect(user_response.size).to eql(3)
   #   end
 
@@ -19,11 +24,11 @@ RSpec.describe Api::V1::UsersController, type: :controller do
   describe "GET #show" do
     before(:each) do 
       @user = FactoryGirl.create(:user)
-      get :show, id: @user.id, format: :json
+      get :show, id: @user.id
     end
 
     it "shows the detail of the user specified by the id" do
-      user_response = JSON.parse(response.body, symbolize_names: true)
+      user_response = json_response
       expect(user_response[:email]).to eql(@user.email)
     end
 
@@ -35,11 +40,11 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     context "When user creation is successful" do
       before(:each) do
         @user_attributes = FactoryGirl.attributes_for :user #this creates attributes for a user object..for further use
-        post :create, { user: @user_attributes }, format: :json
+        post :create, { user: @user_attributes }
       end
 
       it "creates the user and returns a json representation of same" do
-        user_response = JSON.parse(response.body, symbolize_names: true)
+        user_response = json_response
         expect(user_response[:email]).to eql(@user_attributes[:email]) 
       end
     end
@@ -47,21 +52,20 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     context "when user creation fails" do
       before(:each) do
         @user_attributes = { email: "test_user@email.com" } #incomplete user attrs, no password and confirmation 
-        post :create, { user: @user_attributes }, format: :json
+        post :create, { user: @user_attributes }
       end
 
       it "should return an error indicating a failed user-creation" do
-        user_response = JSON.parse(response.body, symbolize_names: true)
+        user_response = json_response
         expect(user_response).to have_key(:errors)
       end
 
       it "returns a text indicating why user-creation failed" do
-        user_response = JSON.parse(response.body, symbolize_names: true)
+        user_response = json_response
         expect(user_response[:errors][:password]).to include "can't be blank"
       end
     end
   end
-
 
   describe "PUT/PATCH #update" do
     before(:each) do
@@ -70,11 +74,11 @@ RSpec.describe Api::V1::UsersController, type: :controller do
 
     context "when successful" do
       before(:each) do
-        patch :update, { id: @user.id, user: { email: "updated_user@email.com"} }, format: :json
+        patch :update, { id: @user.id, user: { email: "updated_user@email.com"} }
       end
 
       it "should update successfully" do
-        user_response = JSON.parse(response.body, symbolize_names: true)
+        user_response = json_response
         expect(user_response[:email]).to eql("updated_user@email.com")
       end
 
