@@ -70,6 +70,9 @@ RSpec.describe Api::V1::UsersController do
   describe "PUT/PATCH #update" do
     before(:each) do
       @user = FactoryGirl.create :user
+
+      set_header_token(@user.auth_token)
+      # request.headers["Authorization"] = @user.auth_token
     end
 
     context "when successful" do
@@ -78,8 +81,9 @@ RSpec.describe Api::V1::UsersController do
       end
 
       it "should update successfully" do
+        @user.reload
         user_response = json_response
-        expect(user_response[:email]).to eql("updated_user@email.com")
+        expect(user_response[:email]).to eql(@user.email)
       end
 
       it { respond_with 200 }

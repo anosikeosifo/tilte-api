@@ -1,6 +1,7 @@
 class Api::V1::UsersController < ApplicationController
   respond_to :json
   
+  before_action :authenticate_with_token!, only: [:update, :destroy]
   def index
     respond_with User.all
   end
@@ -20,10 +21,10 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def update
-    user = User.find(params[:id]) #with the assumption that only a user can update himself
-    user.update(user_params)
+    #with the assumption that only a signed-in user can update himself
+    user = current_user
 
-    if user.save
+    if user.update(user_params)
       render json: user, status: 200, location: [:api, user]
     else
       render json: { errors: user.errors }, status: 422
