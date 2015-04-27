@@ -50,6 +50,6 @@ RSpec.describe Api::V1::SessionsController, type: :controller do
       delete :destroy, id: user.auth_token
     end
 
-    it { should respond_with 204 }#should successfully sign the user out
+    it { should respond_with 204 } #should successfully sign the user out
   end
 end
