@@ -43,13 +43,13 @@ RSpec.describe Api::V1::SessionsController, type: :controller do
 
   describe "DELETE #destroy" do #sign out
     before(:each) do 
-      @user = FactoryGirl.create :user
-      signin user, store: false
-      delete :destroy
+      user = FactoryGirl.create :user
+
+      set_header_token(user.auth_token)
+      sign_in user  #, store: false
+      delete :destroy, id: user.auth_token
     end
 
-    it "should successfully sign the user out" do
-      it { should respond_with 204 }
-    end
+    it { should respond_with 204 }#should successfully sign the user out
   end
 end
