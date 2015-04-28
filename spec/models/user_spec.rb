@@ -30,4 +30,34 @@ RSpec.describe User, type: :model do
       expect(@user.auth_token).not_to eql(existing_user.auth_token)  
     end
   end
+
+  describe "#follow" do
+    let(:other_user) { FactoryGirl.create :user }
+
+    
+    before do
+      @user.save
+      @user.follow(other_user)
+    end
+
+    it "should return userA as a follower of userB" do
+      expect(@user.following?(other_user)).to eql(true)
+    end
+  end
+
+  describe "#unfollow" do
+    let(:other_user) { FactoryGirl.create :user }
+
+    before do
+      @user.save
+      @user.follow(other_user)
+
+      @user.unfollow(other_user)
+    end
+
+    it "returns that the user is not following anyone" do
+      expect(@user.following.size).to eql(0)
+    end
+  end 
+
 end

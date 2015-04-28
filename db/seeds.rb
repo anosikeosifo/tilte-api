@@ -5,3 +5,16 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+20.times { FactoryGirl.create :user }
+
+#here i seed data for the  user relationships
+
+users = User.all
+
+followers = users[0..7]
+following = users[9..15]
+
+followers.each do |follower|
+  following.each { |followed_user| follower.follow(followed_user) }
+end
