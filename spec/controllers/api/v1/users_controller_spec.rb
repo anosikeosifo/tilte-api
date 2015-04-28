@@ -95,4 +95,12 @@ RSpec.describe Api::V1::UsersController do
     end
   end
 
+  describe "#followers" do
+
+  end
+
+  describe "#following" do
+
+  end
+
 end

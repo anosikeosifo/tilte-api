@@ -2,20 +2,23 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::RelationshipsController, type: :controller do
   
+  let(:follower) { FactoryGirl.create(:user) }
+  let(:followed) { FactoryGirl.create(:user) }
+
+  before(:each) do
+    set_header_token(follower.auth_token)
+    # sign_in follower 
+  end
 
   describe "GET #create" do
-    before(:each) do
-      @follower = FactoryGirl.create(:user)
-      @followed = FactoryGirl.create(:user)
-      # @follower.save
-      # @followed.save
-    end
     context "relationship is created successfully" do
-      it "creates the user relationship" do
-        post :create, { follower_id: follower.id, followed_id: followed.id }
-      end
+      before do
+        post :create, { followed_id: followed.id }
+      end #at this point follower becomes the current user
 
-      expect(@follower.following.size).to eql(1)
+      it "creates the user relationship" do
+        expect(follower.following.size).to eql(1)
+      end
     end
 
     context "relationship creation fails" do
@@ -24,9 +27,14 @@ RSpec.describe Api::V1::RelationshipsController, type: :controller do
   end
 
   describe "GET #destroy" do
-    it "returns http success" do
-      get :destroy
-      expect(response).to have_http_status(:success)
+    before do
+      follower.follow(followed)
+      relationship = follower.relationships.find_by(followed: followed.id)
+      delete :destroy, { id: relationship.id }
+    end
+
+    it "terminates the relationship between both users" do
+      expect(follower.following).not_to include(followed)
     end
   end
 
