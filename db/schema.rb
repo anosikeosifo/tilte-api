@@ -11,14 +11,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150427153754) do
+ActiveRecord::Schema.define(version: 20150502221738) do
 
-  create_table "relationships", force: true do |t|
-    t.integer  "follower_id"
-    t.integer  "followed_id"
+  create_table "posts", force: true do |t|
+    t.string   "image_url"
+    t.string   "description"
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "posts", ["user_id"], name: "index_posts_on_user_id", using: :btree
+
+  create_table "relationships", force: true do |t|
+    t.integer  "follower_id", null: false
+    t.integer  "followed_id", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "relationships", ["followed_id"], name: "idx_followed_id", using: :btree
+  add_index "relationships", ["follower_id", "followed_id"], name: "idx_followed_follower", unique: true, using: :btree
+  add_index "relationships", ["follower_id"], name: "idx_follower_id", using: :btree
 
   create_table "users", force: true do |t|
     t.datetime "created_at"
