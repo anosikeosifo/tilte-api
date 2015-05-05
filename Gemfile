@@ -47,10 +47,9 @@ gem 'capistrano-rails', group: :development
 gem 'devise' #authentication and user management
 gem 'kaminari' #pagination
 gem 'figaro'
-
+gem 'factory_girl_rails'
 
 group :development, :test do
-  gem 'factory_girl_rails'
   gem 'ffaker'
 end
 
