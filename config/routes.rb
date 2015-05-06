@@ -1,11 +1,13 @@
 require 'api_constraints'
 Rails.application.routes.draw do
 
-  get 'relationships/create'
+  namespace :api do
+  namespace :v1 do
+    get 'posts/remove'
+    end
+  end
 
-  get 'relationships/destroy'
-
-  get 'create/destroy'
+  
 
   devise_for :users
   # devise_for :users
@@ -15,6 +17,8 @@ Rails.application.routes.draw do
         member do
           get :followers, :following 
         end
+
+        resources :posts, only:[:index, :create, :update, :remove]
       end
       resources :sessions, only: [:create, :destroy]
       resources :relationships, only: [:create, :destroy]

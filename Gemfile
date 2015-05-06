@@ -70,4 +70,4 @@ gem 'font-awesome-rails'
 gem 'simple_form'
 
 #json serializatoin
-gem 'active_model_serializers', '~> 0.8.0'
+gem 'active_model_serializers', git: 'git@github.com:rails-api/active_model_serializers.git', branch: '0-8-stable'

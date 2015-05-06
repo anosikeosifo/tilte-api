@@ -28,7 +28,7 @@ RSpec.describe Api::V1::UsersController do
     end
 
     it "shows the detail of the user specified by the id" do
-      user_response = json_response
+      user_response = json_response[:user]
       expect(user_response[:email]).to eql(@user.email)
     end
 
@@ -44,7 +44,7 @@ RSpec.describe Api::V1::UsersController do
       end
 
       it "creates the user and returns a json representation of same" do
-        user_response = json_response
+        user_response = json_response[:user]
         expect(user_response[:email]).to eql(@user_attributes[:email]) 
       end
     end
@@ -82,7 +82,7 @@ RSpec.describe Api::V1::UsersController do
 
       it "should update successfully" do
         @user.reload
-        user_response = json_response
+        user_response = json_response[:user]
         expect(user_response[:email]).to eql(@user.email)
       end
 

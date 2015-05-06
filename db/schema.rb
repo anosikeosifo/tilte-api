@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150502221738) do
+ActiveRecord::Schema.define(version: 20150506065354) do
 
   create_table "posts", force: true do |t|
     t.string   "image_url"
@@ -48,6 +48,8 @@ ActiveRecord::Schema.define(version: 20150502221738) do
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
     t.string   "auth_token",             default: ""
+    t.string   "username"
+    t.string   "fullname"
   end
 
   add_index "users", ["auth_token"], name: "index_users_on_auth_token", unique: true, using: :btree

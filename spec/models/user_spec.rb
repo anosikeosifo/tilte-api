@@ -16,6 +16,8 @@ RSpec.describe User, type: :model do
 
   it { should validate_uniqueness_of(:auth_token) }
 
+  it { should have_many(:posts) }
+
   describe "#generate_auth_token!" do
     before(:each) { @user = FactoryGirl.create :user }
     it "generates auth_tokens dynamically" do

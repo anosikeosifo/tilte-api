@@ -1,8 +1,8 @@
 FactoryGirl.define do
   factory :post do
     image_url "MyString"
-    description "MyString"
-    user nil
+    description { FFaker::Lorem.sentence(word_count=4) }
+    user
   end
 
 end
