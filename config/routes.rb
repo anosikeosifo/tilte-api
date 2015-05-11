@@ -1,14 +1,6 @@
 require 'api_constraints'
 Rails.application.routes.draw do
 
-  namespace :api do
-  namespace :v1 do
-    get 'posts/remove'
-    end
-  end
-
-  
-
   devise_for :users
   # devise_for :users
   namespace :api, defaults: { format: :json } do #this specifies json as the default format for route responses
@@ -17,9 +9,10 @@ Rails.application.routes.draw do
         member do
           get :followers, :following 
         end
-
-        resources :posts, only:[:index, :create, :update, :remove]
+        
       end
+      resources :posts, only:[:index, :create, :update, :show, :remove]
+      
       resources :sessions, only: [:create, :destroy]
       resources :relationships, only: [:create, :destroy]
     end

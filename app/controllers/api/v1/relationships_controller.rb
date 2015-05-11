@@ -1,4 +1,5 @@
 class Api::V1::RelationshipsController < ApplicationController
+  respond_to :json
   def create
     user_to_follow = User.find_by(id: params[:followed_id])
     current_user.follow(user_to_follow)
