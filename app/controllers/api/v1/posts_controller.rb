@@ -31,10 +31,20 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def remove
+    user = User.find_by(id: params[:user_id])
+    post = user.posts.find_by(id: params[:id])
+    
+    post.mark_as_removed!
+    if post.save
+      render json: post, status: 200, location: [:api, post]
+    else
+      render json: { errors: "Post could not be removed. Please try again" }, status: 422
+    end
+    
   end
 
   private 
     def post_params
-      params.require(:post).permit(:description, :image_url, :user_id)
+      params.require(:post).permit(:description, :image_url, :user_id, :removed)
     end
 end

@@ -9,12 +9,17 @@ RSpec.describe Api::V1::PostsController do
     before(:each) do
       # @user = FactoryGirl.create :user
       @post = FactoryGirl.create(:post)
-      get :show, id: @post.id 
+      get :show, id: @post.id
     end
 
     it "should return the post with specified id" do
       post_response = json_response[:post]
       expect(post_response[:id]).to eql(@post.id)
+    end
+
+    it "has the user as an embedded object" do
+      post_response = json_response[:post]
+      expect(post_response[:user][:email]).to eql(@post.user.email)
     end
 
     it { should respond_with 200 }
@@ -85,8 +90,29 @@ RSpec.describe Api::V1::PostsController do
     end
   end
 
-  describe "GET #remove" do
-    
+  describe "POST #remove" do
+    before do
+      @user = FactoryGirl.create(:user)
+      @post = FactoryGirl.create(:post, user: @user)
+    end
+
+    context "when post is removed successfully" do
+       before do
+        post :remove, { id: @post.id, user_id: @user.id }
+      end
+
+      it "should mark the post as removed" do
+        # @post.reload
+        post_response = json_response[:post]
+        expect(post_response).to have_key(:removed) # eql(true)
+      end
+
+      it { should respond_with 200 }
+    end
+
+    context "when post removal fails" do
+      
+    end
   end
 
 end

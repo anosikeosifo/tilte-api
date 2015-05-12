@@ -11,7 +11,11 @@ Rails.application.routes.draw do
         end
         
       end
-      resources :posts, only:[:index, :create, :update, :show, :remove]
+      resources :posts, only:[:index, :create, :update, :show] do
+        member do
+          post 'remove'
+        end
+      end
       
       resources :sessions, only: [:create, :destroy]
       resources :relationships, only: [:create, :destroy]
