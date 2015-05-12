@@ -26,17 +26,34 @@ RSpec.describe Api::V1::PostsController do
   end
 
   describe "GET #index" do
-    before do
-      3.times { FactoryGirl.create :post }
-      get :index
+    context "When no post_ids param is sent" do
+      before do
+        3.times { FactoryGirl.create :post }
+        get :index
+      end
+
+      it "should return a list of the created posts" do
+        posts_response = json_response[:posts]
+        expect(posts_response.size).to eql 3
+      end
     end
 
-    it "should return a list of the created posts" do
-      posts_response = json_response[:posts]
-      expect(posts_response.size).to eql 3
+    context "when a post_ids param is sent" do
+      before do
+        @user = FactoryGirl.create :user
+        3.times { FactoryGirl.create :post, user: @user }
+        get :index, post_ids: @user.post_ids
+      end
+
+      it "returns only posts that were created by the specified user" do
+        posts_response = json_response[:posts]
+
+        posts_response.each do |post_response|
+          expect(post_response[:user][:email]).to eql(@user.email)
+        end
+      end
     end
 
-    it { should respond_with 200 }
   end
 
   describe "PUT/PATCH #update" do

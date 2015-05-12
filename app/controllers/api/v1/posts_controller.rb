@@ -2,7 +2,12 @@ class Api::V1::PostsController < ApplicationController
 
   respond_to :json
   def index
-    respond_with Post.all
+    if params[:product_ids]
+      products =  Product.find(params[:product_ids])
+    else
+      products =  Post.all
+    end
+    respond_with products
   end
 
   def update
