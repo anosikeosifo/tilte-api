@@ -21,3 +21,6 @@ following = users[9..15]
 followers.each do |follower|
   following.each { |followed_user| follower.follow(followed_user) }
 end
+
+#create posts
+20.times { FactoryGirl.create :post }
