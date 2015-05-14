@@ -24,3 +24,9 @@ end
 
 #create posts
 20.times { FactoryGirl.create :post }
+
+#create 4 comments each for 10 post
+Post.first(10).each do |post|
+  4.times { FactoryGirl.create(:comment, post_id: post.id) }
+end
+

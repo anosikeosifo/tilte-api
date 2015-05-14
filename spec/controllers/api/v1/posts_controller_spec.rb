@@ -121,7 +121,7 @@ RSpec.describe Api::V1::PostsController do
       it "should mark the post as removed" do
         # @post.reload
         post_response = json_response[:post]
-        expect(post_response).to have_key(:removed) # eql(true)
+        expect(post_response[:removed]).to eql(true)
       end
 
       it { should respond_with 200 }
