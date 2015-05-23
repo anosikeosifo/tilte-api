@@ -19,6 +19,8 @@ class Api::V1::PostsController < ApplicationController
     else
       render json: { errors: post.errors }, status: 422
     end
+  ensure
+    clean_tempfile
   end
 
   def create
@@ -29,6 +31,8 @@ class Api::V1::PostsController < ApplicationController
     else
       render json: { errors: post.errors }, status: 422
     end
+  ensure
+    clean_tempfile
   end
 
   def show 
@@ -83,7 +87,6 @@ class Api::V1::PostsController < ApplicationController
         filename: filename
       })
     end
-
 
     def clean_tempfile
       if @tempFile
