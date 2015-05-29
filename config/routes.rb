@@ -12,20 +12,15 @@ Rails.application.routes.draw do
       resources :users, only: [:index, :show, :create, :update, :following, :followers] do
         get :followers, on: :member
         get :following, on: :member
-
-        resources :posts, only:[:create]
-        resources :comments, only: [:create]
       end
 
 
-      resources :posts, only:[:index, :update, :show] do
-        member do
-          post 'remove'
-        end
+      resources :posts, only:[:create,  :index, :update, :show ] do
+        post :remove, on: :member
       end
 
 
-      resources :comments, only: [:index] do
+      resources :comments, only: [:index, :create] do
         post :flag, on: :member
         post :remove, on: :member
       end
