@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150514152243) do
+ActiveRecord::Schema.define(version: 20150528210001) do
 
   create_table "comments", force: true do |t|
     t.string   "text"
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20150514152243) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "removed",     default: false
+    t.string   "image"
   end
 
   add_index "posts", ["user_id"], name: "index_posts_on_user_id", using: :btree

@@ -24,7 +24,6 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0',          group: :doc
 
 gem 'mysql2', group: :development
-gem 'carrierwave'
 
 group :production do
   gem 'pg'
@@ -48,6 +47,11 @@ gem 'capistrano-rails', group: :development
 gem 'devise' #authentication and user management
 gem 'kaminari' #pagination
 gem 'figaro'
+gem 'fog'
+gem 'carrierwave'
+gem 'carrierwave-base64'
+gem 'unf'
+
 
 
 group :development, :test, :production do
