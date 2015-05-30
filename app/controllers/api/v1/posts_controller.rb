@@ -79,7 +79,7 @@ class Api::V1::PostsController < ApplicationController
         img_params = { filename: "image.#{image_data[:extension]}", type: image_data[:type], tempfile: temp_img_file }
         uploaded_file = ActionDispatch::Http::UploadedFile.new(img_params)
 
-        post_hash[:image] = uploaded_filee
+        post_hash[:image] = uploaded_file
         post_hash.delete(:image_url)
       end
       post_hash
