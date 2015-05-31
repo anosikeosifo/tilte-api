@@ -23,7 +23,7 @@ class Api::V1::PostsController < ApplicationController
 
   def create
     post = Post.new(convert_data_uri_to_upload(post_params))
-    post.image_url = "https://s3-eu-west-1.amazonaws.com/tilteposts/#{post.image.url}"
+    post.image_url = "https://s3-eu-west-1.amazonaws.com/tilteposts#{post.image.url}"
     
     if post.save
       logger.info "New post: #{post.inspect}"
@@ -54,7 +54,7 @@ class Api::V1::PostsController < ApplicationController
   private 
 
     def split_base64(uri_str)
-      if uri_str.match(%r{/^data:(.*?);(.*?),(.*)$/m})
+      if uri_str.match(%r{^data:(.*?);(.*?),(.*)$})
         uri = Hash.new
         uri[:type] = $1 #gets the image/jpg part of the image
         uri[:encoder] = $2 #base64
