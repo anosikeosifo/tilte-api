@@ -54,7 +54,7 @@ class Api::V1::PostsController < ApplicationController
   private 
 
     def split_base64(uri_str)
-      if uri_str.match(%r{^data:(.*?);(.*?),(.*)$})
+      if uri_str.match(%r{/^data:(.*?);(.*?),(.*)$/m})
         uri = Hash.new
         uri[:type] = $1 #gets the image/jpg part of the image
         uri[:encoder] = $2 #base64
