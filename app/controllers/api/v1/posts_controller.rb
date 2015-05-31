@@ -72,7 +72,7 @@ class Api::V1::PostsController < ApplicationController
         image_data = split_base64(post_hash[:image_url])
         image_data_string = image_data[:data]
         logger.info "image_data_string: #{image_data_string}"
-        image_data_binary = Base64.decode64(image_data_string)
+        image_data_binary = Base64.decode64(image_data_string).force_encoding('UTF-8').encode
 
         temp_img_file = Tempfile.new("")
         temp_img_file.binmode #sets the image file to binary mode
