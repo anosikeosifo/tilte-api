@@ -71,6 +71,7 @@ class Api::V1::PostsController < ApplicationController
       if post_hash[:image_url].try(:match, %r{^data:(.*?);(.*?),(.*)$} )
         image_data = split_base64(post_hash[:image_url])
         image_data_string = image_data[:data]
+        logger.info "image_data_string: #{image_data_string}"
         image_data_binary = Base64.decode64(image_data_string)
 
         temp_img_file = Tempfile.new("")
