@@ -60,7 +60,7 @@ class Api::V1::PostsController < ApplicationController
         uri[:encoder] = $2 #base64
         uri[:data] = $3 #data string
         uri[:extension] = $1.split('/')[1]
-
+        logger.info"uri[:data]: #{uri[:data]}"
         return uri
       else
         nil
