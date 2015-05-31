@@ -68,15 +68,15 @@ class Api::V1::PostsController < ApplicationController
     end
 
     def convert_data_uri_to_upload(post_hash)
-      if post_hash[:image_url].try(:match, %r{^data:(.*?);(.*?),(.*)$} )
+      if post_hash[:image_url].try(:match, %r{^data:(.*?);(.*?),(.*)$})
         image_data = split_base64(post_hash[:image_url])
         image_data_string = image_data[:data]
         logger.info "image_data_string: #{image_data_string}"
-        image_data_binary = Base64.decode64(image_data_string).force_encoding('UTF-8').encode
+        image_data_binary = Base64.decode64(image_data_string) #.force_encoding('UTF-8').encode
 
         temp_img_file = Tempfile.new("")
         temp_img_file.binmode #sets the image file to binary mode
-        temp_img_file << image_data_binary
+        temp_img_file.write(image_data_binary)
         temp_img_file.rewind
 
         img_params = { filename: "image.#{image_data[:extension]}", type:
