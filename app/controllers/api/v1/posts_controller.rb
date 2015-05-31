@@ -23,7 +23,7 @@ class Api::V1::PostsController < ApplicationController
 
   def create
     post = Post.new(convert_data_uri_to_upload(post_params))
-    post.image_url = post.image.url
+    post.image_url = "https://s3-eu-west-1.amazonaws.com/tilteposts/#{post.image.url}"
     
     if post.save
       logger.info "New post: #{post.inspect}"
