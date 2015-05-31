@@ -5,7 +5,7 @@ class Api::V1::PostsController < ApplicationController
     if params[:post_ids]
       posts =  Post.find(params[:post_ids])
     else
-      posts =  Post.all
+      posts =  Post.order(created_at: :desc)
     end
     respond_with posts
   end
