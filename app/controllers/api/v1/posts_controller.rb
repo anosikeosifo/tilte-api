@@ -23,6 +23,7 @@ class Api::V1::PostsController < ApplicationController
 
   def create
     post = Post.new(convert_data_uri_to_upload(post_params))
+    post.image_url = post.image.url
     logger.info "New post: #{post.inspect}"
     if post.save
       render json: post, status: 200, location:[:api, post]
@@ -76,9 +77,11 @@ class Api::V1::PostsController < ApplicationController
         temp_img_file << image_data_binary
         temp_img_file.rewind
 
-        img_params = { filename: "image.#{image_data[:extension]}", type: image_data[:type], tempfile: temp_img_file }
-        uploaded_file = ActionDispatch::Http::UploadedFile.new(img_params)
+        img_params = { filename: "image.#{image_data[:extension]}", type:
+        image_data[:type], tempfile: temp_img_file } 
+        uploaded_file = PostUploader.new(img_params) #  ActionDispatch::Http::UploadedFile.new(img_params)
 
+        logger.info "uploaded_file: #{uploaded_file}"
         post_hash[:image] = uploaded_file
         post_hash.delete(:image_url)
       end
