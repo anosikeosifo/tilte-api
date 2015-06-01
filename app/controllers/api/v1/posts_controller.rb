@@ -54,7 +54,7 @@ class Api::V1::PostsController < ApplicationController
   private 
 
     def split_base64(uri_str)
-      if uri_str.match(%r{^data:(.*?);(.*?),(.*)$})
+      if uri_str.match(%r{^data:(.*?);(.*?),(.*)$}m)
         uri = Hash.new
         uri[:type] = $1 #gets the image/jpg part of the image
         uri[:encoder] = $2 #base64
@@ -68,7 +68,7 @@ class Api::V1::PostsController < ApplicationController
     end
 
     def convert_data_uri_to_upload(post_hash)
-      if post_hash[:image_url].try(:match, %r{^data:(.*?);(.*?),(.*)$})
+      if post_hash[:image_url].try(:match, %r{^data:(.*?);(.*?),(.*)$}m)
         image_data = split_base64(post_hash[:image_url])
         image_data_string = image_data[:data]
         logger.info "image_data_string: #{image_data_string}"
