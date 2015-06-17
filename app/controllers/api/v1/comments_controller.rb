@@ -4,9 +4,9 @@ class Api::V1::CommentsController < ApplicationController
   def index
     if params[:comment_ids]
       logger.error params[:comment_ids]
-      comments = Comment.find(params[:comment_ids])
+      comments = Comment.with_avatar.find(params[:comment_ids])
     else
-      comments = Comment.all
+      comments = Comment.with_avatar
     end
 
     respond_with comments
