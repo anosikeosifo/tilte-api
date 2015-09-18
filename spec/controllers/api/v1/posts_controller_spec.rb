@@ -28,13 +28,13 @@ RSpec.describe Api::V1::PostsController do
   describe "GET #index" do
     context "When no post_ids param is sent" do
       before do
-        3.times { FactoryGirl.create :post }
+        5.times { FactoryGirl.create :post }
         get :index
       end
 
       it "should return a list of the created posts" do
         posts_response = json_response[:posts]
-        expect(posts_response.size).to eql 3
+        expect(posts_response.size).to eql 5
       end
     end
 
@@ -62,7 +62,7 @@ RSpec.describe Api::V1::PostsController do
       @post = FactoryGirl.create(:post, user: @user)
     end
 
-    context "when post is updated successfully" do  
+    context "when post is updated successfully" do
       before do
         patch :update, { id: @post.id, user_id: @user.id, post: { description: "this is an updated description of the post" } }
       end
@@ -80,24 +80,24 @@ RSpec.describe Api::V1::PostsController do
 
   describe "GET #create" do
     context "when post is successfully created" do
-      before do 
+      before do
         @user = FactoryGirl.create :user
         @post_attribute = FactoryGirl.attributes_for(:post)
       end
 
       it "should create the user" do
-        expect { 
-          post :create, { post: @post_attribute, user_id: @user.id } 
+        expect {
+          post :create, { post: @post_attribute, user_id: @user.id }
         }.to change(Post, :count).by(1)
       end
     end
 
     # context "when post creation fails" do
-    #   before do 
+    #   before do
     #     user = FactoryGirl.create :user
     #     #create a post with an invalid description
     #     post_attribute = FactoryGirl.attributes_for(:post, description: "")
-    #     post :create, { post: post_attribute, user_id: user.id } 
+    #     post :create, { post: post_attribute, user_id: user.id }
     #   end
 
     #   it "returns an error" do
@@ -128,7 +128,7 @@ RSpec.describe Api::V1::PostsController do
     end
 
     context "when post removal fails" do
-      
+
     end
   end
 
