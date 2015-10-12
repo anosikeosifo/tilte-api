@@ -1,22 +1,23 @@
 class Api::V1::UsersController < ApplicationController
   respond_to :json
-  
+
   before_action :authenticate_with_token!, only: [:update, :destroy]
   def index
-    respond_with User.all
+    render json: { success: true, data: User.all, message: "" }, status: 200
   end
 
   def show
-    respond_with User.find_by(id: params[:id])
+    user = User.find_by(id: params[:id])
+    render json: { success: true, data: user, message: "" }, status: 200
   end
 
   def create
     user = User.new(user_params)
 
     if user.save
-      render json: user, status: 201, location:[:api, user]
+      render json: { success: true, data: user, message: "" }, status: 201, location:[:api, user]
     else
-      render json: { errors: user.errors }, status: 422
+      render json: { success: false, data: "", message: user.errors.full_messages.to_sentence }, status: 422
     end
   end
 
@@ -25,24 +26,24 @@ class Api::V1::UsersController < ApplicationController
     user = current_user
 
     if user.update(user_params)
-      render json: user, status: 200, location: [:api, user]
+      render json: { success: true, data: user, message: "" }, status: 200, location:[:api, user]
     else
-      render json: { errors: user.errors }, status: 422
+      render json: { success: false, data: "", message: user.errors.full_messages.to_sentence }, status: 422
     end
   end
 
-  def followers 
+  def followers
     user = User.find_by(id: params[:id])
-    render json: user.followers, status: 200
+    render json: { success: true, data: user.followers, message: "" }, status: 200
   end
 
   def following
     user = User.find_by(id: params[:id])
-    render json: user.following, status: 200
+    render json: { success: true, data: user.following, message: "" }, status: 200
   end
 
 
-  private 
+  private
   def user_params
     params.require(:user).permit(:email, :password, :password_confirmation, :avatar)
   end

@@ -6,5 +6,4 @@ FactoryGirl.define do
     removed false
     user
   end
-
 end

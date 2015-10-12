@@ -78,7 +78,7 @@ RSpec.describe Api::V1::PostsController do
     end
   end
 
-  describe "GET #create" do
+  describe "POST #create" do
     context "when post is successfully created" do
       before do
         @user = FactoryGirl.create :user

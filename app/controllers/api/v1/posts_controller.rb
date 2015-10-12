@@ -7,7 +7,7 @@ class Api::V1::PostsController < ApplicationController
     else
       posts =  Post.order(created_at: :desc)
     end
-    respond_with posts
+    render json: { success: true, data: posts, message: "" }
   end
 
   def update
@@ -15,9 +15,11 @@ class Api::V1::PostsController < ApplicationController
     post = user.posts.find_by(id: params[:id])
 
     if post.update(post_params)
-      render json: post, status: 200, location: [:api, post]
+      render json: { success: true, data: post, message: "" }, status: 200, location: [:api, post]
+      # render json: post, status: 200, location: [:api, post]
     else
-      render json: { errors: post.errors }, status: 422
+      # render json: { errors: post.errors }, status: 422
+      render json: { success: false, data: "", message: post.errors.full_messages.to_sentence }, status: 422, location: [:api, post]
     end
   end
 
@@ -26,16 +28,17 @@ class Api::V1::PostsController < ApplicationController
     post.image_url = "https://s3-eu-west-1.amazonaws.com/tilteposts#{post.image.url}"
 
     if post.save
-      logger.info "New post: #{post.inspect}"
-      render json: post, status: 200, location:[:api, post]
+      render json: { success: true, data: post, message: "" }, status: 200, location: [:api, post]
+      # render json: post, status: 200, location:[:api, post]
     else
-      logger.error "could not create post: #{post.errors.full_messages.to_sentence}"
-      render json: { errors: post.errors }, status: 422
+      render json: { success: false, data: "", message: post.errors.full_messages.to_sentence }, status: 422, location: [:api, post]
+      # render json: { errors: post.errors }, status: 422
     end
   end
 
   def show
-    respond_with Post.find_by(id: params[:id])
+    post = Post.find_by(id: params[:id])
+    render json: { success: true, data: post, message: "" }, status: 200
   end
 
   def remove
@@ -44,7 +47,8 @@ class Api::V1::PostsController < ApplicationController
 
     post.mark_as_removed!
     if post.save
-      render json: post, status: 200, location: [:api, post]
+      render json: { success: true, data: post, message: "" }, status: 200, location: [:api, post]
+      #render json: post, status: 200, location: [:api, post]
     else
       render json: { errors: "Post could not be removed. Please try again" }, status: 422
     end
