@@ -1,4 +1,5 @@
 class Api::V1::PostsController < ApplicationController
+  before_action :set_user, only: [:like, :remove, :update]
 
   respond_to :json
   def index
@@ -7,12 +8,11 @@ class Api::V1::PostsController < ApplicationController
     else
       posts =  Post.order(created_at: :desc)
     end
-    render json: { success: true, data: posts, message: "" }
+    render json: { success: true, data: ActiveModel::ArraySerializer.new(posts), message: "" }
   end
 
   def update
-    user = User.find_by(id: params[:user_id])
-    post = user.posts.find_by(id: params[:id])
+    post = @user.posts.find_by(id: params[:id])
 
     if post.update(post_params)
       render json: { success: true, data: post, message: "" }, status: 200, location: [:api, post]
@@ -38,21 +38,27 @@ class Api::V1::PostsController < ApplicationController
 
   def show
     post = Post.find_by(id: params[:id])
-    render json: { success: true, data: post, message: "" }, status: 200
+    render json: { success: true, data: PostSerializer.new(post), status: 200 }
   end
 
   def remove
-    user = User.find_by(id: params[:user_id])
-    post = user.posts.find_by(id: params[:id])
-
-    post.mark_as_removed!
+    @user.posts.find_by(id: params[:id]).mark_as_removed!
     if post.save
       render json: { success: true, data: post, message: "" }, status: 200, location: [:api, post]
       #render json: post, status: 200, location: [:api, post]
     else
       render json: { errors: "Post could not be removed. Please try again" }, status: 422
     end
+  end
 
+  def like
+    @user.posts.find_by(id: params[:id]).like!
+    if post.save
+      render json: { success: true, data: post, message: "" }, status: 200, location: [:api, post]
+      #render json: post, status: 200, location: [:api, post]
+    else
+      render json: { errors: "Post could not be removed. Please try again" }, status: 422
+    end
   end
 
   private
@@ -92,6 +98,10 @@ class Api::V1::PostsController < ApplicationController
         post_hash.delete(:image_url)
       end
       post_hash
+    end
+
+    def set_user
+      @user = user = User.find_by(id: params[:user_id])
     end
 
     def post_params

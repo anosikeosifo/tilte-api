@@ -17,6 +17,7 @@ Rails.application.routes.draw do
 
       resources :posts, only:[:create,  :index, :update, :show ] do
         post :remove, on: :member
+        post :like, on: :member
       end
 
 
@@ -24,8 +25,8 @@ Rails.application.routes.draw do
         post :flag, on: :member
         post :remove, on: :member
       end
-      
-      
+
+
       resources :sessions, only: [:create, :destroy]
       resources :relationships, only: [:create, :destroy]
     end

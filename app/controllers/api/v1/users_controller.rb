@@ -3,12 +3,12 @@ class Api::V1::UsersController < ApplicationController
 
   before_action :authenticate_with_token!, only: [:update, :destroy]
   def index
-    render json: { success: true, data: User.all, message: "" }, status: 200
+    render json: { success: true, data: ActiveModel::ArraySerializer.new(User.all), message: "" }, status: 200
   end
 
   def show
     user = User.find_by(id: params[:id])
-    render json: { success: true, data: user, message: "" }, status: 200
+    render json: { success: true, data: UserSerializer.new(user), message: "" }, status: 200
   end
 
   def create
@@ -34,12 +34,12 @@ class Api::V1::UsersController < ApplicationController
 
   def followers
     user = User.find_by(id: params[:id])
-    render json: { success: true, data: user.followers, message: "" }, status: 200
+    render json: { success: true, data: ActiveModel::ArraySerializer.new(user.followers), message: "" }, status: 200
   end
 
   def following
     user = User.find_by(id: params[:id])
-    render json: { success: true, data: user.following, message: "" }, status: 200
+    render json: { success: true, data: ActiveModel::ArraySerializer.new(user.following), message: "" }, status: 200
   end
 
 

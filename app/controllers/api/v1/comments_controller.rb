@@ -9,16 +9,16 @@ class Api::V1::CommentsController < ApplicationController
       comments = Comment.with_avatar
     end
 
-    respond_with comments
+    render json: { success: true, data: ActiveModel::ArraySerializer.new(comments), message: "" }, status: 200
   end
 
   def flag
     comment = Comment.find_by(id: params[:id])
-    
+
     if comment.update_attribute('flagged', true)
-      render json: comment, status: 200
+      render json: { success: true, data: CommentSerializer.new(comment), message: "" }, status: 200
     else
-      render json: { errors: "this post cannot be flagged at this time. Please try again." }
+      render json: { success: false, data: "", message: comment.errors.full_messages.to_sentence }, status: 422
     end
   end
 
@@ -27,9 +27,9 @@ class Api::V1::CommentsController < ApplicationController
     comment.remove!
 
     if comment.save
-      render json: comment, status: 200
+      render json: { success: true, data: CommentSerializer.new(comment), message: "" }, status: 200
     else
-      render json: { errors: "this post cannot be flagged at this time. Please try again." }
+      render json: { success: false, data: "", message: comment.errors.full_messages.to_sentence }, status: 422
     end
   end
 
@@ -37,9 +37,9 @@ class Api::V1::CommentsController < ApplicationController
     comment = Comment.new(comment_params)
 
     if comment.save
-      render json: comment, status: 200, location:[:api, comment.post] 
+      render json: { success: true, data: CommentSerializer.new(comment), message: "" }, status: 200, location:[:api, comment.post]
     else
-      render json: {errors: comment.errors }
+      render json: { success: false, data: "", message: comment.errors.full_messages.to_sentence }, status: 422
     end
   end
 
