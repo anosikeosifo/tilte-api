@@ -3,11 +3,11 @@ class Api::V1::UsersController < ApplicationController
 
   before_action :authenticate_with_token!, only: [:update, :destroy]
   def index
-    render json: { success: true, data: ActiveModel::ArraySerializer.new(User.all), message: "" }, status: 200
+    render json: { success: true, data: ActiveModel::ArraySerializer.new(User.all.includes(:posts, :favorites)), message: "" }, status: 200
   end
 
   def show
-    user = User.find_by(id: params[:id])
+    user = User.includes(:posts, :favorites).find_by(id: params[:id])
     render json: { success: true, data: UserSerializer.new(user), message: "" }, status: 200
   end
 

@@ -23,6 +23,9 @@ class User < ActiveRecord::Base
   has_many :following, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships
 
+  has_many :favorites
+  has_many :posts, through: :favorites
+
   def follow(other_user)
     active_relationships.create(followed_id: other_user.id)
   end

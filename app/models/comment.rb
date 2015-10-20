@@ -1,6 +1,6 @@
 class Comment < ActiveRecord::Base
   belongs_to :user
-  belongs_to :post
+  belongs_to :post, counter_cache: true
 
   scope :with_avatar, -> {
     includes(:user).all.each do |comment|

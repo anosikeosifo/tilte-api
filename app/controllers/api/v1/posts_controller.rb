@@ -4,9 +4,9 @@ class Api::V1::PostsController < ApplicationController
   respond_to :json
   def index
     if params[:post_ids]
-      posts =  Post.find(params[:post_ids])
+      posts =  Post.find(params[:post_ids]).includes(:user, :comments)
     else
-      posts =  Post.order(created_at: :desc)
+      posts =  Post.order(created_at: :desc).includes(:user, :comments)
     end
     render json: { success: true, data: ActiveModel::ArraySerializer.new(posts), message: "" }
   end
@@ -37,7 +37,7 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def show
-    post = Post.find_by(id: params[:id])
+    post = Post.includes(:user, :comments).find_by(id: params[:id])
     render json: { success: true, data: PostSerializer.new(post), status: 200 }
   end
 
@@ -57,9 +57,20 @@ class Api::V1::PostsController < ApplicationController
       render json: { success: true, data: post, message: "" }, status: 200, location: [:api, post]
       #render json: post, status: 200, location: [:api, post]
     else
-      render json: { errors: "Post could not be removed. Please try again" }, status: 422
+      render json: { errors: "Post could not be liked. Please try again" }, status: 422
     end
   end
+
+  def favorite
+    @user.posts.find_by(id: params[:id]).favorite!
+    if post.save
+      render json: { success: true, data: post, message: "" }, status: 200, location: [:api, post]
+      #render json: post, status: 200, location: [:api, post]
+    else
+      render json: { errors: "Post could not be marked as favorite. Please try again" }, status: 422
+    end
+  end
+
 
   private
 
