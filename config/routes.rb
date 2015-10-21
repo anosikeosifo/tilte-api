@@ -10,20 +10,22 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do #this specifies json as the default format for route responses
     scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
       resources :users, only: [:index, :show, :create, :update, :following, :followers] do
-        get :followers, on: :member
-        get :following, on: :member
+        get :followers, on: :collection
+        get :following, on: :collection
+        post :feed, on: :collection
       end
 
 
-      resources :posts, only:[:create,  :index, :update, :show ] do
-        post :remove, on: :member
-        post :like, on: :member
+      resources :posts, only:[:create, :index, :update, :show ] do
+        post :remove, on: :collection
+        # post :like, on: :member
+        post :favorite, on: :collection
       end
 
 
       resources :comments, only: [:index, :create] do
-        post :flag, on: :member
-        post :remove, on: :member
+        post :flag, on: :collection
+        post :remove, on: :collection
       end
 
 

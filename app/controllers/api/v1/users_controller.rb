@@ -1,9 +1,16 @@
 class Api::V1::UsersController < ApplicationController
-  respond_to :json
+  respond_to                                :json
+  before_action                             :authenticate_with_token!, only: [:update, :destroy]
+  before_action                             :set_user, only: [:feed, :following, :followers]
 
-  before_action :authenticate_with_token!, only: [:update, :destroy]
+
   def index
     render json: { success: true, data: ActiveModel::ArraySerializer.new(User.all.includes(:posts, :favorites)), message: "" }, status: 200
+  end
+
+  def feed
+    Post.signed_in_user = @user
+    render json: { success: true, data: ActiveModel::ArraySerializer.new(@user.feed), message: "" }, status: 200
   end
 
   def show
@@ -33,18 +40,19 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def followers
-    user = User.find_by(id: params[:id])
-    render json: { success: true, data: ActiveModel::ArraySerializer.new(user.followers), message: "" }, status: 200
+    render json: { success: true, data: ActiveModel::ArraySerializer.new(@user.followers), message: "" }, status: 200
   end
 
   def following
-    user = User.find_by(id: params[:id])
-    render json: { success: true, data: ActiveModel::ArraySerializer.new(user.following), message: "" }, status: 200
+    render json: { success: true, data: ActiveModel::ArraySerializer.new(@user.following), message: "" }, status: 200
   end
-
 
   private
   def user_params
     params.require(:user).permit(:email, :password, :password_confirmation, :avatar)
+  end
+
+  def set_user
+    @user = User.includes(:favorites).find(params[:user_id])
   end
 end

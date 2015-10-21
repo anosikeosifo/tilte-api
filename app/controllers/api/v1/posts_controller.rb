@@ -62,8 +62,8 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def favorite
-    @user.posts.find_by(id: params[:id]).favorite!
-    if post.save
+    @user.favorites.build(post_id: params[:post_id])
+    if @user.save
       render json: { success: true, data: post, message: "" }, status: 200, location: [:api, post]
       #render json: post, status: 200, location: [:api, post]
     else
@@ -112,7 +112,7 @@ class Api::V1::PostsController < ApplicationController
     end
 
     def set_user
-      @user = user = User.find_by(id: params[:user_id])
+      @user = user = User.find(params[:user_id])
     end
 
     def post_params
