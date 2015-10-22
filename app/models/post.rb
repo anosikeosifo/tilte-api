@@ -19,8 +19,8 @@ class Post < ActiveRecord::Base
     self.removed = true
   end
 
-  def like!
-    self.increment!(:like_count, 1)
+  def favorite!
+    self.increment!(:favorite_count, 1)
   end
 
   private

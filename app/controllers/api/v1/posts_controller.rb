@@ -1,5 +1,6 @@
 class Api::V1::PostsController < ApplicationController
-  before_action :set_user, only: [:like, :remove, :update, :favorite]
+  before_action :set_user, only: [:remove, :update, :favorite]
+  before_action :set_post, only: [:favorite, :remove]
 
   respond_to :json
   def index
@@ -62,15 +63,15 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def favorite
-    @user.favorites.build(post_id: params[:post_id])
+    @user.favorites.build(@post)
     if @user.save
+      @post.favorite!
       render json: { success: true, data:"", message: "" }, status: 200
       #render json: post, status: 200, location: [:api, post]
     else
       render json: { success: false, message: "Post could not be marked as favorite. Please try again" }, status: 422
     end
   end
-
 
   private
 
@@ -111,11 +112,16 @@ class Api::V1::PostsController < ApplicationController
       post_hash
     end
 
-    def set_user
-      @user = user = User.find(params[:user_id])
-    end
+    private
+      def set_user
+        @user = user = User.find(params[:user_id])
+      end
 
-    def post_params
-      params.require(:post).permit(:description, :image_url, :user_id, :removed, :image)
-    end
+      def set_post
+        @post = Post.find(params[:post_id])
+      end
+
+      def post_params
+        params.require(:post).permit(:description, :image_url, :user_id, :removed, :image)
+      end
 end
