@@ -25,10 +25,6 @@ class Post < ActiveRecord::Base
 
   private
     def check_favorite
-      @is_favorite = signed_in_user.favorites.include?(self)
+      @is_favorite = signed_in_user.favorites.pluck(:post_id).include?(id)
     end
-
-    # def is_favorite_request?
-    #   @is_favorite_request
-    # end
 end

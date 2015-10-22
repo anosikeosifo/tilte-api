@@ -67,7 +67,7 @@ class Api::V1::PostsController < ApplicationController
       render json: { success: true, data:"", message: "" }, status: 200
       #render json: post, status: 200, location: [:api, post]
     else
-      render json: { errors: "Post could not be marked as favorite. Please try again" }, status: 422
+      render json: { success: false, message: "Post could not be marked as favorite. Please try again" }, status: 422
     end
   end
 
