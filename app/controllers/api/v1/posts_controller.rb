@@ -1,5 +1,5 @@
 class Api::V1::PostsController < ApplicationController
-  before_action :set_user, only: [:like, :remove, :update]
+  before_action :set_user, only: [:like, :remove, :update, :favorite]
 
   respond_to :json
   def index
@@ -64,7 +64,7 @@ class Api::V1::PostsController < ApplicationController
   def favorite
     @user.favorites.build(post_id: params[:post_id])
     if @user.save
-      render json: { success: true, data: post, message: "" }, status: 200, location: [:api, post]
+      render json: { success: true, data:"", message: "" }, status: 200
       #render json: post, status: 200, location: [:api, post]
     else
       render json: { errors: "Post could not be marked as favorite. Please try again" }, status: 422
