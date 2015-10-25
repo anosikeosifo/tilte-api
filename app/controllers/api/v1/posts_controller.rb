@@ -52,24 +52,13 @@ class Api::V1::PostsController < ApplicationController
     end
   end
 
-  def like
-    @user.posts.find_by(id: params[:id]).like!
-    if post.save
-      render json: { success: true, data: post, message: "" }, status: 200, location: [:api, post]
-      #render json: post, status: 200, location: [:api, post]
-    else
-      render json: { errors: "Post could not be liked. Please try again" }, status: 422
-    end
-  end
-
   def favorite
-    @user.favorites.build(@post)
-    if @user.save
-      @post.favorite!
-      render json: { success: true, data:"", message: "" }, status: 200
-      #render json: post, status: 200, location: [:api, post]
+    favorite = @user.favorites.create(post_id: @post.id)
+    if favorite.valid?
+      @post = Post.find(@post.id)
+      render json: { success: true, data: PostSerializer.new(@post), message: "" }, status: 200
     else
-      render json: { success: false, message: "Post could not be marked as favorite. Please try again" }, status: 422
+      render json: { success: false, data: "", message: favorite.errors.full_messages.to_sentence }, status: 422
     end
   end
 
@@ -118,6 +107,7 @@ class Api::V1::PostsController < ApplicationController
       end
 
       def set_post
+        Post.signed_in_user = @user
         @post = Post.find(params[:post_id])
       end
 

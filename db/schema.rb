@@ -41,10 +41,10 @@ ActiveRecord::Schema.define(version: 20151022042029) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "removed",        default: false
+    t.boolean  "removed",         default: false
     t.string   "image"
-    t.integer  "favorite_count", default: 0
-    t.integer  "comments_count", default: 0
+    t.integer  "favorites_count", default: 0
+    t.integer  "comments_count",  default: 0
   end
 
   add_index "posts", ["user_id"], name: "index_posts_on_user_id", using: :btree

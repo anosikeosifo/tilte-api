@@ -3,6 +3,7 @@ class Api::V1::UsersController < ApplicationController
   before_action                             :authenticate_with_token!, only: [:update, :destroy]
   before_action                             :set_user, only: [:feed, :following, :followers]
 
+  
 
   def index
     render json: { success: true, data: ActiveModel::ArraySerializer.new(User.all.includes(:posts, :favorites)), message: "" }, status: 200
