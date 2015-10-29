@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       resources :users, only: [:index, :show, :create, :update, :following, :followers] do
         get :followers, on: :collection
         get :following, on: :collection
+        get :favorites, on: :collection
         post :feed, on: :collection
       end
 

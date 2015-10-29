@@ -1,9 +1,9 @@
 class Api::V1::UsersController < ApplicationController
   respond_to                                :json
   before_action                             :authenticate_with_token!, only: [:update, :destroy]
-  before_action                             :set_user, only: [:feed, :following, :followers]
+  before_action                             :set_user, only: [:feed, :following, :followers, :favorites]
 
-  
+
 
   def index
     render json: { success: true, data: ActiveModel::ArraySerializer.new(User.all.includes(:posts, :favorites)), message: "" }, status: 200
@@ -46,6 +46,10 @@ class Api::V1::UsersController < ApplicationController
 
   def following
     render json: { success: true, data: ActiveModel::ArraySerializer.new(@user.following), message: "" }, status: 200
+  end
+
+  def favorites
+    render json: { success: true, data: ActiveModel::ArraySerializer.new(@user.favorite_posts), message: "" }, status: 200
   end
 
   private

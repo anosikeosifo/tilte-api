@@ -8,6 +8,7 @@ class Post < ActiveRecord::Base
   after_initialize :check_favorite, if: :signed_in_user
 
   scope :for_user_feed, ->(user) { where(:user_id => user.following.pluck(:id).push(user.id)) }
+  scope :favorites_of, ->(user) { where(:id => user.favorites.pluck(:post_id)) }
   scope :by_user, ->(user) { where(user_id: user.id) }
 
 

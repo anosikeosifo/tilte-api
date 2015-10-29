@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
   has_many :followers, through: :passive_relationships
 
   has_many :favorites
-  has_many :posts, through: :favorites
+  has_many :favorite_posts, through: :favorites, class_name: "Post"
 
   def follow!(other_user)
     active_relationships.create(followed_id: other_user.id)
@@ -41,4 +41,9 @@ class User < ActiveRecord::Base
   def feed
     Post.for_user_feed(self)
   end
+
+  def favorite_posts
+    Post.favorites_of(self)
+  end
+
 end
