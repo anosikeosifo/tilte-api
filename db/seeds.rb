@@ -19,7 +19,7 @@ followers = users[0..7]
 following = users[9..15]
 
 followers.each do |follower|
-  following.each { |followed_user| follower.follow(followed_user) }
+  following.each { |followed_user| follower.follow!(followed_user) }
 end
 
 #create posts
@@ -29,4 +29,3 @@ end
 Post.first(10).each do |post|
   4.times { FactoryGirl.create(:comment, post_id: post.id) }
 end
-
