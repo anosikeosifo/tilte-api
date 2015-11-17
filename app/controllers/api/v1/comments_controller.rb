@@ -37,7 +37,7 @@ class Api::V1::CommentsController < ApplicationController
     comment = Comment.new(comment_params)
 
     if comment.save
-      render json: { success: true, data: CommentSerializer.new(comment), message: "" }, status: 200, location:[:api, comment.post]
+      render json: { success: true, data: CommentSerializer.new(comment), message: "" }, status: 200
     else
       render json: { success: false, data: "", message: comment.errors.full_messages.to_sentence }, status: 422
     end
