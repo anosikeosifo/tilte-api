@@ -26,14 +26,13 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'rack-cors', :require => 'rack/cors'
 
 group :production do
-  gem 'pg'
-  gem 'rails_12factor'
-  gem 'puma'
+  # gem 'pg'
+  # gem 'rails_12factor'
+  # gem 'puma'
 end
 
 group :development do
   gem 'mysql2'
-  gem 'capistrano-rails'
   gem 'bullet'
 end
 
@@ -79,3 +78,13 @@ gem 'simple_form'
 
 #json serializatoin
 gem 'active_model_serializers', '~> 0.8.3'
+
+gem 'passenger',                              '~> 5.0.0.beta1'
+
+group :development do
+    gem 'capistrano',         require: false
+    gem 'capistrano-rvm',     require: false
+    gem 'capistrano-rails',   require: false
+    gem 'capistrano-bundler', require: false
+    # gem 'capistrano3-puma',   require: false
+end
