@@ -353,7 +353,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   kaminari
-  mysql2
+  mysql2 (= 0.3.18)
   passenger (~> 5.0.0.beta1)
   rack-cors
   rails (= 4.1.10)
