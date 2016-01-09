@@ -43,7 +43,7 @@ set :rails_env, 'production'
 set :branch, 'master'
 set :stage, :production
 
-set :repo_url, "git@osifo-ahead:anosikeosifo/tilte-api.git"
+set :repo_url, "git@github.com:anosikeosifo/tilte-api.git"
 
 server '52.34.197.169',
   user: 'deploy',
