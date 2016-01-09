@@ -29,6 +29,7 @@ gem 'mysql2', '0.3.18'
 
 group :development do
   gem 'bullet'
+  gem 'pry-rails'
 end
 
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring

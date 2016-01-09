@@ -19,7 +19,6 @@ Rails.application.routes.draw do
 
       resources :posts, only:[:create, :index, :update, :show ] do
         post :remove, on: :collection
-        # post :like, on: :member
         post :favorite, on: :collection
       end
 

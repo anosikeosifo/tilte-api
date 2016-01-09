@@ -9,6 +9,8 @@ class User < ActiveRecord::Base
   validates :auth_token, uniqueness: true
   before_create :generate_auth_token!
 
+  attr_accessor :can_be_followed
+
   def generate_auth_token!
     begin
       self.auth_token = Devise.friendly_token
@@ -34,6 +36,10 @@ class User < ActiveRecord::Base
     active_relationships.find_by(followed_id: other_user.id).destroy
   end
 
+  def get_followers
+    updated_followers = followers.includes(:posts).each { |follower| follower.can_be_followed_by(self) }
+  end
+
   def following?(other_user)
     following.include?(other_user)
   end
@@ -46,4 +52,7 @@ class User < ActiveRecord::Base
     Post.favorites_of(self)
   end
 
+  def can_be_followed_by(user)
+    @can_be_followed = user.following.pluck(:id).exclude?(self.id)
+  end
 end

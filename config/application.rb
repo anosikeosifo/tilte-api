@@ -57,5 +57,10 @@ module TilteApi
           :max_age => 0
       end
     end
+
+    console do
+      require 'pry'
+      config.console = Pry
+    end
   end
 end
