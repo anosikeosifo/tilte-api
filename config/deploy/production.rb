@@ -42,14 +42,16 @@
 set :rails_env, 'production'
 set :branch, 'master'
 set :stage, :production
-
-set :repo_url, "git@github.com:anosikeosifo/tilte-api.git"
+set :repository, "git@github.com:anosikeosifo/tilte-api.git"
 
 server '52.34.197.169',
   user: 'deploy',
   port: 22,
   roles: [:web, :app, :db],
-  ssh_options: { :forward_agent => true }
+  ssh_options: {
+                keys: %w(~/.ssh/id_rsa_ahead),
+                forward_agent: true
+               }
 
 #
 # Global options

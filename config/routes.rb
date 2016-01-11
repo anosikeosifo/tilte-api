@@ -30,7 +30,9 @@ Rails.application.routes.draw do
 
 
       resources :sessions, only: [:create, :destroy]
-      resources :relationships, only: [:create, :destroy]
+      resources :relationships, only: [:create] do
+        delete :destroy, on: :collection
+      end
     end
   end
 end

@@ -4,6 +4,7 @@ lock '3.4.0'
 set :application,     'tilteapi'
 set :repo_url,        'git@github.com:anosikeosifo/tilte-api.git'
 set :user,            'deploy'
+#set :ssh_options, { forward_agent: true, paranoid: true, keys: "~/.ssh/id_rsa_ahead" }
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
