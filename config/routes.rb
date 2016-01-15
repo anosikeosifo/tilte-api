@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   # devise_for :users
   namespace :api, defaults: { format: :json } do #this specifies json as the default format for route responses
     scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
-      resources :users, only: [:index, :show, :create, :update, :following, :followers] do
+      resources :users, only: [:index, :show, :create, :update] do
         get :followers, on: :collection
         get :following, on: :collection
         get :favorites, on: :collection
