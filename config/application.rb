@@ -58,9 +58,9 @@ module TilteApi
       end
     end
 
-    # console do
-    #   require 'pry'
-    #   config.console = Pry
-    # end
+    console do
+      require 'pry'
+      config.console = Pry
+    end
   end
 end
