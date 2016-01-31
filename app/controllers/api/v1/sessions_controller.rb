@@ -5,13 +5,13 @@ class Api::V1::SessionsController < ApplicationController
     user_password = params[:password]
     user = user_email.present? && User.find_by(email: user_email)
 
-    if user.valid_password? user_password
+    if user && user.valid_password?(user_password)
       sign_in user, store: false
       user.generate_auth_token!
       user.save
       render json: { success: true, data: ActiveModel::ArraySerializer.new([user]), message: "" }, location: [:api, user], status: 200
     else
-      render json: { success: false, data: "", message: user.errors.full_messages.to_sentence }, status: 422, location: [:api, user]
+      render json: { success: false, data: [], message: user.present? ? user.errors.full_messages.to_sentence : "No user exists with this email" }, status: 200
     end
   end
 
