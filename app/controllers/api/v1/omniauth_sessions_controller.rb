@@ -1,23 +1,8 @@
-class OmniauthCallbacksController < Devise::OmniauthCallbacksController
-  def self.provides_callback_for(provider)
-    class_eval %Q{
-      def #{provider}
-        @user = User.find_for_oauth(env["omniauth.auth"], current_user)
-
-        if @user.persisted?
-          sign_in_and_redirect @user, event: :authentication
-        else
-          session["devise.#{provider}_data"] = env["omniauth.auth"]
-          redirect_to new_user_registration_url
-        end
-      end
-    }
-  end
-
+class Api::V1::OmniauthSessionsController < ApplicationController
   def create
     email = params[:email]
     token = params[:token]
-    provider = param[:provider]
+    provider = params[:provider] || "facebook"
     user = email.present? && User.joins(:identity).where(email: email, token: token).first
 
     if user
@@ -38,24 +23,13 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     begin
       new_user = User.create!(email: email, password: password)
       if new_user.persisted?
-        new_user.identity.build(provider: oauth_provider, token: user_token, uid: "testUID1234")
+        Identity.create!(provider: oauth_provider, token: user_token, uid: "testUID1234", user_id: new_user.id)
         return true
       else
         return false
       end
     rescue
       return false
-    end
-  end
-
-
-  provides_callback_for :facebook
-
-  def after_sign_in_path_for(resource)
-    if resource.email_verified?
-      super resource
-    else
-      finish_signup_path(resource)
     end
   end
 end
