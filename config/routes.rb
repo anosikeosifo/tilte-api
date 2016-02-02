@@ -30,6 +30,7 @@ Rails.application.routes.draw do
 
 
       resources :sessions, only: [:create, :destroy]
+      resources :omniauth_sessions, only: [:create]
       resources :relationships, only: [:create] do
         delete :destroy, on: :collection
       end
