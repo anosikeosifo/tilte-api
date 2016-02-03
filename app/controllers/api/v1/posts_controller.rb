@@ -5,9 +5,9 @@ class Api::V1::PostsController < ApplicationController
   respond_to :json
   def index
     if params[:post_ids]
-      posts =  Post.find(params[:post_ids]).includes(:user, :comments)
+      posts =  Post.find(params[:post_ids]).order(created_at: :desc).includes(:user, :comments)
     elsif params[:user_id]
-      posts = Post.where(user_id: params[:user_id])
+      posts = Post.order(created_at: :desc).where(user_id: params[:user_id])
     else
       posts =  Post.order(created_at: :desc).includes(:user, :comments)
     end
