@@ -1,6 +1,7 @@
 class Api::V1::OmniauthSessionsController < ApplicationController
   def create
     email = params[:email]
+    name = params[:name]
     uid = params[:uid]
     token = params[:token]
     provider = params[:provider] || "facebook"
@@ -10,10 +11,10 @@ class Api::V1::OmniauthSessionsController < ApplicationController
       sign_in user, store: false
       user.generate_auth_token!
       user.save
-      render json: { success: true, data: ActiveModel::ArraySerializer.new([user]), message: "" }, location: [:api, user], status: 200
+      render json: { success: true, data: ActiveModel::ArraySerializer.new([user]), message: "existing_user" }, location: [:api, user], status: 200
     else
-      if create_user_from_oauth(email, "password", token, provider, uid)
-        render json: { success: true, data: ActiveModel::ArraySerializer.new([User.last]), message: "" }, status: 200
+      if create_user_from_oauth(email, name, "password", token, provider, uid)
+        render json: { success: true, data: ActiveModel::ArraySerializer.new([User.last]), message: "new_user" }, status: 200
       else
         render json: { success: false, data: [], message: "Login failed. Please try again." }, status: 200
       end
@@ -22,8 +23,8 @@ class Api::V1::OmniauthSessionsController < ApplicationController
 
   private
 
-  def create_user_from_oauth(email, password, token, oauth_provider, uid)
-    new_user = User.create!(email: email, password: password)
+  def create_user_from_oauth(email, name, password, token, oauth_provider, uid)
+    new_user = User.create!(email: email, fullname: name, password: password)
     if new_user.persisted?
       new_user.identities.create(provider: oauth_provider, token: token, uid: uid)
       return true
