@@ -5,7 +5,7 @@ class Api::V1::OmniauthSessionsController < ApplicationController
     uid = params[:uid]
     token = params[:token]
     provider = params[:provider] || "facebook"
-    user = email.present? && User.joins(:identities).where(email: email, identities: { token: token }).first
+    user = email.present? && User.joins(:identities).where(email: email, identities: { uid: uid }).first
 
     if user
       sign_in user, store: false
