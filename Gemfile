@@ -86,5 +86,5 @@ group :development do
 end
 
 group :production do
-  gem 'pg'
+  gem 'pg' #adds the postgres gem
 end
