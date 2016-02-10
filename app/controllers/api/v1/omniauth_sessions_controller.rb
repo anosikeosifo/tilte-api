@@ -4,7 +4,7 @@ class Api::V1::OmniauthSessionsController < ApplicationController
     name = params[:name]
     uid = params[:uid]
     token = params[:token]
-    , avatar_url =  params[:profile_photo_url]
+    avatar_url =  params[:profile_photo_url]
     provider = params[:provider] || "facebook"
     user = email.present? && User.joins(:identities).where(email: email, identities: { uid: uid }).first
 
