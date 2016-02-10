@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160210121406) do
+ActiveRecord::Schema.define(version: 20160210141206) do
 
   create_table "comments", force: true do |t|
     t.string   "text"
@@ -81,9 +81,9 @@ ActiveRecord::Schema.define(version: 20160210121406) do
     t.string   "auth_token",             default: ""
     t.string   "username"
     t.string   "fullname"
-    t.string   "avatar"
     t.integer  "posts_count",            default: 0
     t.integer  "favorites_count",        default: 0
+    t.string   "avatar"
     t.string   "profile_photo_url"
   end
 

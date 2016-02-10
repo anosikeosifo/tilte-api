@@ -1,4 +1,4 @@
-class AddAvatarUrlToUser < ActiveRecord::Migration
+class AddProfilePhotoUrlToUser < ActiveRecord::Migration
   def change
     add_column :users, :profile_photo_url, :string
   end
