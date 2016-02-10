@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160202165313) do
+ActiveRecord::Schema.define(version: 20160210121406) do
 
   create_table "comments", force: true do |t|
     t.string   "text"
@@ -84,6 +84,7 @@ ActiveRecord::Schema.define(version: 20160202165313) do
     t.string   "avatar"
     t.integer  "posts_count",            default: 0
     t.integer  "favorites_count",        default: 0
+    t.string   "profile_photo_url"
   end
 
   add_index "users", ["auth_token"], name: "index_users_on_auth_token", unique: true, using: :btree
