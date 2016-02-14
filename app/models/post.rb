@@ -7,7 +7,7 @@ class Post < ActiveRecord::Base
 
   after_initialize :check_favorite, if: :signed_in_user
 
-  scope :for_user_feed, ->(user) { where(:user_id => user.following.pluck(:id).push(user.id)) }
+  scope :for_user_feed, ->(user) { where(:user_id => user.following.pluck(:id).push(user.id)).order(created_at: :desc) }
   scope :favorites_of, ->(user) { where(:id => user.favorites.pluck(:post_id)) }
   scope :by_user, ->(user) { where(user_id: user.id) }
 
@@ -33,6 +33,11 @@ class Post < ActiveRecord::Base
 
     repost = repost_relationships.build(post_id: self.id, repost_id: repost.id, reposter_id: reposter_id, owner_id: self.user_id)
     return repost.save
+  end
+
+
+  def original_post
+    Post.find(repost_id) if repost_id
   end
 
   private

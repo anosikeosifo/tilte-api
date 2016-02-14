@@ -26,7 +26,8 @@ class User < ActiveRecord::Base
   has_many :identities
   has_many :favorites
   has_many :favorite_posts, through: :favorites, class_name: "Post"
-  has_many :reposts, dependent: :destroy
+  has_many :repost_relationships
+  has_many :reposts, class_name: "Post", through: :repost_relationships, source: :owner, dependent: :destroy
 
   def follow!(other_user)
     active_relationships.create(followed_id: other_user.id)

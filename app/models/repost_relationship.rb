@@ -1,5 +1,5 @@
 class RepostRelationship < ActiveRecord::Base
-  belongs_to :original_post, class_name: "Post", foreign_key: "post_id"
+  belongs_to :original_post, class_name: "Post", foreign_key: "post_id" , counter_cache: :reposts_count
   belongs_to :repost, class_name: "Post", foreign_key: "repost_id"
   belongs_to :reposter, class_name: "User", foreign_key: "reposter_id"
   belongs_to :owner, class_name: "User", foreign_key: "owner_id"
@@ -8,5 +8,6 @@ class RepostRelationship < ActiveRecord::Base
 
   def update_post_with_repost_data
     Post.find(repost_id).update_attribute(:repost_id, id)
+    # Post.find(post_id).increment!(:reposts_count, 1)
   end
 end

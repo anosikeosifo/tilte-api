@@ -65,7 +65,7 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def repost
-    reposter_id = params[user_id]
+    reposter_id = params[:user_id]
     if @post.repost!(reposter_id)
       render json: { success: true, data: PostSerializer.new(@post.reload), message: "" }, status: 200
     else

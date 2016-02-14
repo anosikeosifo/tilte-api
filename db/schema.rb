@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(version: 20160214045759) do
     t.integer  "favorites_count", default: 0
     t.integer  "comments_count",  default: 0
     t.integer  "repost_id"
+    t.integer  "reposts_count",   default: 0
   end
 
   add_index "posts", ["user_id"], name: "index_posts_on_user_id", using: :btree
