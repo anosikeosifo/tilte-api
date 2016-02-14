@@ -1,6 +1,6 @@
 class Api::V1::PostsController < ApplicationController
   before_action :set_user, only: [:remove, :update, :favorite]
-  before_action :set_post, only: [:favorite, :remove]
+  before_action :set_post, only: [:favorite, :remove, :repost]
 
   respond_to :json
   def index
@@ -22,7 +22,7 @@ class Api::V1::PostsController < ApplicationController
       # render json: post, status: 200, location: [:api, post]
     else
       # render json: { errors: post.errors }, status: 422
-      render json: { success: false, data: "", message: post.errors.full_messages.to_sentence }, status: 422, location: [:api, post]
+      render json: { success: false, data: "", message: post.errors.full_messages.to_sentence }, status: 200, location: [:api, post]
     end
   end
 
@@ -34,7 +34,7 @@ class Api::V1::PostsController < ApplicationController
       render json: { success: true, data: post, message: "" }, status: 200, location: [:api, post]
       # render json: post, status: 200, location:[:api, post]
     else
-      render json: { success: false, data: "", message: post.errors.full_messages.to_sentence }, status: 422, location: [:api, post]
+      render json: { success: false, data: "", message: post.errors.full_messages.to_sentence }, status: 200, location: [:api, post]
       # render json: { errors: post.errors }, status: 422
     end
   end
@@ -50,7 +50,7 @@ class Api::V1::PostsController < ApplicationController
       render json: { success: true, data: post, message: "" }, status: 200, location: [:api, post]
       #render json: post, status: 200, location: [:api, post]
     else
-      render json: { errors: "Post could not be removed. Please try again" }, status: 422
+      render json: { success: false, data: post, message: "Post could not be removed, PLease try again." }, status: 200
     end
   end
 
@@ -60,7 +60,16 @@ class Api::V1::PostsController < ApplicationController
       @post = Post.find(@post.id)
       render json: { success: true, data: PostSerializer.new(@post), message: "" }, status: 200
     else
-      render json: { success: false, data: "", message: favorite.errors.full_messages.to_sentence }, status: 422
+      render json: { success: false, data: "", message: favorite.errors.full_messages.to_sentence }, status: 200
+    end
+  end
+
+  def repost
+    reposter_id = params[user_id]
+    if @post.repost!(reposter_id)
+      render json: { success: true, data: PostSerializer.new(@post.reload), message: "" }, status: 200
+    else
+      render json: { success: false, data: "", message: @post.reload.errors.full_messages.to_sentence }, status: 200
     end
   end
 
@@ -103,17 +112,16 @@ class Api::V1::PostsController < ApplicationController
       post_hash
     end
 
-    private
-      def set_user
-        @user = user = User.find(params[:user_id])
-      end
+    def set_user
+      @user = user = User.find(params[:user_id])
+    end
 
-      def set_post
-        Post.signed_in_user = @user
-        @post = Post.find(params[:post_id])
-      end
+    def set_post
+      Post.signed_in_user = @user
+      @post = Post.find(params[:post_id])
+    end
 
-      def post_params
-        params.require(:post).permit(:description, :image_url, :user_id, :removed, :image)
-      end
+    def post_params
+      params.require(:post).permit(:description, :image_url, :user_id, :removed, :image)
+    end
 end

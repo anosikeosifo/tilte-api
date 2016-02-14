@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       resources :posts, only:[:create, :index, :update, :show ] do
         post :remove, on: :collection
         post :favorite, on: :collection
+        post :repost, on: :collection
       end
 
 

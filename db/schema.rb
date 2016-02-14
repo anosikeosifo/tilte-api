@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160210141206) do
+ActiveRecord::Schema.define(version: 20160214045759) do
 
   create_table "comments", force: true do |t|
     t.string   "text"
@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 20160210141206) do
     t.string   "image"
     t.integer  "favorites_count", default: 0
     t.integer  "comments_count",  default: 0
+    t.integer  "repost_id"
   end
 
   add_index "posts", ["user_id"], name: "index_posts_on_user_id", using: :btree
@@ -61,6 +62,15 @@ ActiveRecord::Schema.define(version: 20160210141206) do
   create_table "relationships", force: true do |t|
     t.integer  "follower_id"
     t.integer  "followed_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "repost_relationships", force: true do |t|
+    t.integer  "reposter_id"
+    t.integer  "owner_id"
+    t.integer  "post_id"
+    t.integer  "repost_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
