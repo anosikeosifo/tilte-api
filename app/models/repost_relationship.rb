@@ -8,6 +8,5 @@ class RepostRelationship < ActiveRecord::Base
 
   def update_post_with_repost_data
     Post.find(repost_id).update_attribute(:repost_id, id)
-    # Post.find(post_id).increment!(:reposts_count, 1)
   end
 end
