@@ -38,7 +38,7 @@ class Post < ActiveRecord::Base
 
 
   def original_post
-    Post.find(repost_id) if repost_id
+    RepostRelationship.find(repost_id).original_post if repost_id
   end
 
   private
