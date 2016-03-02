@@ -41,20 +41,23 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def followers
-    # User.can_by_followed_by(@user.id)
-    render json: { success: true, data: ActiveModel::ArraySerializer.new(@user.get_followers), message: "" }, status: 200
+    followers = @user.get_followers
+    render json: { success: true, count: followers.size, data: ActiveModel::ArraySerializer.new(followers), message: "" }, status: 200
   end
 
   def following
-    render json: { success: true, data: ActiveModel::ArraySerializer.new(@user.following), message: "" }, status: 200
+    following = @user.following
+    render json: { success: true, count: following.size, data: ActiveModel::ArraySerializer.new(following), message: "" }, status: 200
   end
 
   def favorites
-    render json: { success: true, data: ActiveModel::ArraySerializer.new(@user.favorite_posts), message: "" }, status: 200
+    favorites = @user.favorite_posts
+    render json: { success: true, count: favorites, data: ActiveModel::ArraySerializer.new(favorites), message: "" }, status: 200
   end
 
   def posts
-    render json: { success: true, data: ActiveModel::ArraySerializer.new(@user.posts), message: "" }, status: 200
+    user_posts = @user.posts
+    render json: { success: true, count: user_posts.size,  data: ActiveModel::ArraySerializer.new(user_posts), message: "" }, status: 200
   end
 
   private

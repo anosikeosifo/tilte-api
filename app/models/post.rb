@@ -47,7 +47,6 @@ class Post < ActiveRecord::Base
     end
 
     def can_repost?
-      puts "=================== @can_repost: #{ (user != signed_in_user) } ===================="
       @can_repost = (user != signed_in_user)
     end
 
