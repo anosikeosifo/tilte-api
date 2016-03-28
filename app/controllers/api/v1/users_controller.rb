@@ -1,7 +1,7 @@
 class Api::V1::UsersController < ApplicationController
   respond_to                                :json
   before_action                             :authenticate_with_token!, only: [:update, :destroy]
-  before_action                             :set_user, only: [:feed, :following, :followers, :favorites, :posts]
+  before_action                             :set_user, only: [:feed, :following, :followers, :favorites, :posts , :status]
 
 
 
@@ -58,6 +58,11 @@ class Api::V1::UsersController < ApplicationController
   def posts
     user_posts = @user.posts
     render json: { success: true, count: user_posts.size,  data: ActiveModel::ArraySerializer.new(user_posts), message: "" }, status: 200
+  end
+
+  def status
+    user_status = { followers: @user.followers.count, following: @user.following.count, posts: @user.posts.count, favortes: @user.favorites.count }
+    render json: { success: true,  data: ActiveModel::ArraySerializer.new([user_status]), message: "" }, status: 200
   end
 
   private

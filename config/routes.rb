@@ -13,6 +13,7 @@ Rails.application.routes.draw do
         get :followers, on: :collection
         get :following, on: :collection
         get :favorites, on: :collection
+        get :status, on: :collection
         post :feed, on: :collection
       end
 
