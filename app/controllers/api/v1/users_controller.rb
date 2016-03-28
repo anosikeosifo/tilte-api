@@ -61,7 +61,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def status
-    user_status = { followers: @user.followers.count, following: @user.following.count, posts: @user.posts.count, favortes: @user.favorites.count }
+    user_status = { followers: @user.followers.count, following: @user.following.count, posts: @user.posts.count, favorites: @user.favorites.count }
     render json: { success: true,  data: ActiveModel::ArraySerializer.new([user_status]), message: "" }, status: 200
   end
 
