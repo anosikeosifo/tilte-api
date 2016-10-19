@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -13,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 20160214045759) do
 
-  create_table "comments", force: true do |t|
+  create_table "comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "text"
     t.integer  "like_count", default: 0
     t.integer  "user_id"
@@ -22,29 +21,29 @@ ActiveRecord::Schema.define(version: 20160214045759) do
     t.boolean  "removed",    default: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["post_id"], name: "index_comments_on_post_id", using: :btree
+    t.index ["text"], name: "index_comments_on_text", using: :btree
+    t.index ["user_id"], name: "index_comments_on_user_id", using: :btree
   end
 
-  add_index "comments", ["post_id"], name: "index_comments_on_post_id", using: :btree
-  add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
-
-  create_table "favorites", force: true do |t|
+  create_table "favorites", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "user_id"
     t.integer "post_id"
+    t.index ["post_id"], name: "index_favorites_on_post_id", using: :btree
+    t.index ["user_id"], name: "index_favorites_on_user_id", using: :btree
   end
 
-  add_index "favorites", ["post_id"], name: "index_favorites_on_post_id", using: :btree
-  add_index "favorites", ["user_id"], name: "index_favorites_on_user_id", using: :btree
-
-  create_table "identities", force: true do |t|
+  create_table "identities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "user_id"
     t.string   "provider"
     t.string   "uid"
     t.string   "token"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["user_id"], name: "index_identities_on_user_id", using: :btree
   end
 
-  create_table "posts", force: true do |t|
+  create_table "posts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "image_url"
     t.string   "description"
     t.integer  "user_id"
@@ -56,27 +55,30 @@ ActiveRecord::Schema.define(version: 20160214045759) do
     t.integer  "comments_count",  default: 0
     t.integer  "repost_id"
     t.integer  "reposts_count",   default: 0
+    t.index ["user_id"], name: "index_posts_on_user_id", using: :btree
   end
 
-  add_index "posts", ["user_id"], name: "index_posts_on_user_id", using: :btree
-
-  create_table "relationships", force: true do |t|
+  create_table "relationships", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "follower_id"
     t.integer  "followed_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "repost_relationships", force: true do |t|
+  create_table "repost_relationships", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "reposter_id"
     t.integer  "owner_id"
     t.integer  "post_id"
     t.integer  "repost_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["owner_id"], name: "index_repost_relationships_on_owner_id", using: :btree
+    t.index ["post_id"], name: "index_repost_relationships_on_post_id", using: :btree
+    t.index ["repost_id"], name: "index_repost_relationships_on_repost_id", using: :btree
+    t.index ["reposter_id"], name: "index_repost_relationships_on_reposter_id", using: :btree
   end
 
-  create_table "users", force: true do |t|
+  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "email",                  default: "", null: false
@@ -92,14 +94,13 @@ ActiveRecord::Schema.define(version: 20160214045759) do
     t.string   "auth_token",             default: ""
     t.string   "username"
     t.string   "fullname"
+    t.string   "avatar"
     t.integer  "posts_count",            default: 0
     t.integer  "favorites_count",        default: 0
-    t.string   "avatar"
     t.string   "profile_photo_url"
+    t.index ["auth_token"], name: "index_users_on_auth_token", unique: true, using: :btree
+    t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
-
-  add_index "users", ["auth_token"], name: "index_users_on_auth_token", unique: true, using: :btree
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
 end

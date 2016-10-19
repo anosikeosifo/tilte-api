@@ -6,12 +6,12 @@ class Api::V1::UsersController < ApplicationController
 
 
   def index
-    render json: { success: true, data: ActiveModel::ArraySerializer.new(User.all.includes(:posts, :favorites)), message: "" }, status: 200
+    render json: { success: true, data: ActiveModel::Serializer::CollectionSerializer.new(User.all.includes(:posts, :favorites)), message: "" }, status: 200
   end
 
   def feed
     Post.signed_in_user = @user
-    render json: { success: true, data: ActiveModel::ArraySerializer.new(@user.feed), message: "" }, status: 200
+    render json: { success: true, data: ActiveModel::Serializer::CollectionSerializer.new(@user.feed), message: "" }, status: 200
   end
 
   def show
@@ -42,27 +42,27 @@ class Api::V1::UsersController < ApplicationController
 
   def followers
     followers = @user.get_followers
-    render json: { success: true, count: followers.size, data: ActiveModel::ArraySerializer.new(followers), message: "" }, status: 200
+    render json: { success: true, count: followers.size, data: ActiveModel::Serializer::CollectionSerializer.new(followers), message: "" }, status: 200
   end
 
   def following
     following = @user.following
-    render json: { success: true, count: following.size, data: ActiveModel::ArraySerializer.new(following), message: "" }, status: 200
+    render json: { success: true, count: following.size, data: ActiveModel::Serializer::CollectionSerializer.new(following), message: "" }, status: 200
   end
 
   def favorites
     favorites = @user.favorite_posts
-    render json: { success: true, count: favorites, data: ActiveModel::ArraySerializer.new(favorites), message: "" }, status: 200
+    render json: { success: true, count: favorites, data: ActiveModel::Serializer::CollectionSerializer.new(favorites), message: "" }, status: 200
   end
 
   def posts
     user_posts = @user.posts
-    render json: { success: true, count: user_posts.size,  data: ActiveModel::ArraySerializer.new(user_posts), message: "" }, status: 200
+    render json: { success: true, count: user_posts.size,  data: ActiveModel::Serializer::CollectionSerializer.new(user_posts), message: "" }, status: 200
   end
 
   def status
     user_status = { followers: @user.followers.count, following: @user.following.count, posts: @user.posts.count, favorites: @user.favorites.count }
-    render json: { success: true,  data: ActiveModel::ArraySerializer.new([user_status]), message: "" }, status: 200
+    render json: { success: true,  data: ActiveModel::Serializer::CollectionSerializer.new([user_status]), message: "" }, status: 200
   end
 
   private

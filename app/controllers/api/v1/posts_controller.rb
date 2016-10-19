@@ -11,7 +11,7 @@ class Api::V1::PostsController < ApplicationController
     else
       posts =  Post.order(created_at: :desc).includes(:user, :comments)
     end
-    render json: { success: true, count: posts.size,  data: ActiveModel::ArraySerializer.new(posts), message: "" }
+    render json: { success: true, count: posts.size,  data: ActiveModel::Serializer::CollectionSerializer.new(posts), message: "" }
   end
 
   def update

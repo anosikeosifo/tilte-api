@@ -8,19 +8,17 @@ default: &default
   adapter: mysql2
   pool: 5
   timeout: 5000
+  password:  'borderless' #<%= ENV['tiltedb_dev_pwd'] %>
 
 development:
   <<: *default
   database: tilteDB_development
-  password: <%= ENV['tiltedb_dev_pwd'] %>
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
   database: tilteDB_test
-  password: <%= ENV['tiltedb_test_pwd'] %>
 production:
   <<: *default
   database: tilteDB_production
-  password: "borderless"

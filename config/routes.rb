@@ -14,9 +14,9 @@ Rails.application.routes.draw do
         get :following, on: :collection
         get :favorites, on: :collection
         get :status, on: :collection
+        post :contact_suggestions, on: :collection
         post :feed, on: :collection
       end
-
 
       resources :posts, only:[:create, :index, :update, :show ] do
         post :remove, on: :collection
@@ -24,12 +24,10 @@ Rails.application.routes.draw do
         post :repost, on: :collection
       end
 
-
       resources :comments, only: [:index, :create] do
         post :flag, on: :collection
         post :remove, on: :collection
       end
-
 
       resources :sessions, only: [:create, :destroy]
       resources :omniauth_sessions, only: [:create]

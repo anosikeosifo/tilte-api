@@ -9,7 +9,7 @@ class Api::V1::SessionsController < ApplicationController
       sign_in user, store: false
       user.generate_auth_token!
       user.save
-      render json: { success: true, data: ActiveModel::ArraySerializer.new([user]), message: "" }, location: [:api, user], status: 200
+      render json: { success: true, data: ActiveModel::Serializer::CollectionSerializer.new([user]), message: "" }, location: [:api, user], status: 200
     else
       render json: { success: false, data: [], message: user.present? ? user.errors.full_messages.to_sentence : "No user exists with this email" }, status: 200
     end

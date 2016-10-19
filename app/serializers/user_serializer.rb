@@ -1,5 +1,5 @@
 class UserSerializer < ActiveModel::Serializer
-  embed :ids
+  # embed :ids
 
   attributes :id, :email, :username, :fullname, :auth_token, :created_at, :posts_count, :favorites_count, :can_be_followed, :profile_photo_url, :updated_at
 
