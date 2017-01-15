@@ -4,8 +4,8 @@ class Api::V1::PostsController < ApplicationController
 
   respond_to :json
   def index
-    if params[:post_ids]
-      posts =  Post.find(params[:post_ids]).order(created_at: :desc).includes(:user, :comments)
+    if params[:moment_ids]
+      posts =  Post.find(params[:moment_ids]).order(created_at: :desc).includes(:user, :comments)
     elsif params[:user_id]
       posts = Post.order(created_at: :desc).where(user_id: params[:user_id])
     else
@@ -113,12 +113,14 @@ class Api::V1::PostsController < ApplicationController
     end
 
     def set_user
-      @user = user = User.find(params[:user_id])
+      user_id = JSON.parse(params["data"])["user_id"]
+      @user = User.find(user_id)
     end
 
     def set_post
       Post.signed_in_user = @user
-      @post = Post.find(params[:post_id])
+      post_id = JSON.parse(params["data"])["moment_id"]
+      @post = Post.find(post_id)
     end
 
     def post_params

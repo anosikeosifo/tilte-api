@@ -73,4 +73,9 @@ class Api::V1::UsersController < ApplicationController
   def set_user
     @user = User.includes(:favorites).find(params[:user_id])
   end
+
+  def set_user
+    user_id = JSON.parse(params["data"])["user_id"]
+    @user = User.includes(:favorites).find(user_id)
+  end
 end

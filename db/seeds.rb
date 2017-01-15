@@ -16,7 +16,7 @@ end
 users = User.all
 
 followers = users[0..7]
-following = users[9..15]
+following = users[15..28]
 
 followers.each do |follower|
   following.each { |followed_user| follower.follow!(followed_user) }
