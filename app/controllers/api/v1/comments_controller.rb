@@ -35,7 +35,8 @@ class Api::V1::CommentsController < ApplicationController
   end
 
   def create
-    comment = @post.comments.build(text: params[:text], user: User.find(params[:user_id]))
+    params_data = JSON.parse(params[:data])
+    comment = @post.comments.build(text: params_data["text"], user: User.find(params_data["user_id"]))
     if comment.save
       render json: { success: true, data: ActiveModel::Serializer::CollectionSerializer.new([comment]), message: "" }, status: 200
     else
@@ -44,7 +45,8 @@ class Api::V1::CommentsController < ApplicationController
   end
 
   private
-    def set_post
-      @post ||= Post.find(params[:post_id])
-    end
+  def set_post
+    post_id = JSON.parse(params["data"])["moment_id"]
+    @post = Post.find(post_id)
+  end
 end
