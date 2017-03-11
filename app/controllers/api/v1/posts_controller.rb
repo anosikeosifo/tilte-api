@@ -4,14 +4,18 @@ class Api::V1::PostsController < ApplicationController
 
   respond_to :json
   def index
-    if params[:moment_ids]
-      posts =  Post.find(params[:moment_ids]).order(created_at: :desc).includes(:user, :comments)
+    if params[:event_ids]
+      posts =  Post.find(params[:event_ids]).order(created_at: :desc).includes(:user, :comments)
     elsif params[:user_id]
       posts = Post.order(created_at: :desc).where(user_id: params[:user_id])
     else
       posts =  Post.order(created_at: :desc).includes(:user, :comments)
     end
     render json: { success: true, count: posts.size,  data: ActiveModel::Serializer::CollectionSerializer.new(posts), message: "" }
+  end
+
+  def top_posts
+
   end
 
   def update
@@ -119,7 +123,7 @@ class Api::V1::PostsController < ApplicationController
 
     def set_post
       Post.signed_in_user = @user
-      post_id = JSON.parse(params["data"])["moment_id"]
+      post_id = JSON.parse(params["data"])["event_id"]
       @post = Post.find(post_id)
     end
 

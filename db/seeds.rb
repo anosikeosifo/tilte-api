@@ -6,14 +6,38 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-20.times do |count|
+30.times do |count|
   user = FactoryGirl.build(:user) #, email: "tilte-user#{count + 1}@gmail.com")
   user.username = user.fullname.gsub(' ', '_').downcase
   user.save
 end
+users = User.all
+#
+#
+['Fashion', 'Religion', 'Sport', 'Art', 'Technology', 'Social Good'].each do |categoryName|
+  EventCategory.create!({
+    name: categoryName,
+    description: "#{ categoryName }'s description here.",
+    is_featured: true,
+    is_active: true,
+  })
+end
+event_categories = EventCategory.all
+
+5.times do |count|
+  Event.create({
+    title: "Test event #{ count }",
+    description: "description for event #{count}",
+    start_time: DateTime.now.to_i,
+    end_time: DateTime.now.to_i,
+    organizer: users.sample,
+    event_category: event_categories.sample,
+    rating: [1, 2, 3, 4, 5].sample
+  })
+end
+events = Event.all
 
 #here i seed data for the  user relationships
-users = User.all
 
 followers = users[0..7]
 following = users[15..28]
@@ -23,7 +47,16 @@ followers.each do |follower|
 end
 
 #create posts
-20.times { FactoryGirl.create :post }
+20.times do |count|
+  Post.create(
+    image_url: "MyString",
+    description: "Test post description #{ count }", #{ FFaker::Lorem.sentence(word_count=4) }
+    image: "",
+    removed: false,
+    event: events.sample,
+    user: users.sample
+  )
+end
 
 #create 4 comments each for 10 post
 Post.first(10).each do |post|

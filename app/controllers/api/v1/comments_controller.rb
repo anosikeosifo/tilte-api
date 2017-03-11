@@ -1,13 +1,13 @@
 class Api::V1::CommentsController < ApplicationController
   respond_to :json
-  before_action :set_post, except: [:index]
+  before_action :set_post
 
   def index
     if params[:comment_ids]
       logger.error params[:comment_ids]
       comments = Comment.find(params[:comment_ids])
     else
-      comments = Comment
+      comments = Comment.where(post_id: @post.id)
     end
 
     render json: { success: true, data: ActiveModel::Serializer::CollectionSerializer.new(comments), message: "" }, status: 200
@@ -46,7 +46,7 @@ class Api::V1::CommentsController < ApplicationController
 
   private
   def set_post
-    post_id = JSON.parse(params["data"])["moment_id"]
+    post_id = params["post_id"]
     @post = Post.find(post_id)
   end
 end

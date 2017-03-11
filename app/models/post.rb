@@ -15,6 +15,7 @@ class Post < ActiveRecord::Base
 
   validates :description, presence: true
   belongs_to :user
+  belongs_to :event, counter_cache: :post_count
   has_many :comments
   has_many :repost_relationships
   has_many :reposts, class_name: "Post", through: :repost_relationships, source: :repost, dependent: :destroy
