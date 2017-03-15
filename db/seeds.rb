@@ -24,7 +24,7 @@ users = User.all
 end
 event_categories = EventCategory.all
 
-5.times do |count|
+20.times do |count|
   Event.create({
     title: "Test event #{ count }",
     description: "description for event #{count}",
@@ -32,7 +32,7 @@ event_categories = EventCategory.all
     end_time: DateTime.now.to_i,
     organizer: users.sample,
     event_category: event_categories.sample,
-    rating: [1, 2, 3, 4, 5].sample
+    rating: [3, 4, 5].sample
   })
 end
 events = Event.all

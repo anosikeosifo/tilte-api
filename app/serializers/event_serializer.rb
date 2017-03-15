@@ -1,6 +1,6 @@
 class EventSerializer < ActiveModel::Serializer
   ActiveSupport::JSON::Encoding.time_precision = 0
-  attributes :id, :title, :description, :rating, :start_time, :end_time, :event_category_id, :category_name, :attendee_count, :post_count, :created_at
+  attributes :id, :title, :description, :rating, :price, :start_time, :end_time, :event_category_id, :category_name, :attendee_count, :post_count, :created_at
   has_one :organizer #this embeds the related user to the post json reponse
   has_many :locations
 
