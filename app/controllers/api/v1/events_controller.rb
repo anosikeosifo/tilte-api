@@ -25,6 +25,15 @@ class Api::V1::EventsController < ApplicationController
     end
   end
 
+  def show
+    return unless @event 
+    render json: {
+      success: true,
+      data: ActiveModel::Serializer::CollectionSerializer.new([@event]),
+      message: "",
+      status: 200
+    }
+  end
 
   def update
     event = @event.find_by(id: params[:id])
@@ -46,6 +55,6 @@ class Api::V1::EventsController < ApplicationController
 
   private
   def set_event
-
+    @event = Event.find(params[:id])
   end
 end
